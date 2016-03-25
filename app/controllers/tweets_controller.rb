@@ -6,14 +6,16 @@ class TweetsController < ApplicationController
 
     # Use the render method now to specify what should be rendered to the screen
     # this 'render' method fills the request object.
-    
+
     # By default, all render calls will make the status "200 OK", you only need
     # to add a status if you are changing from "200 OK" to something else.
   end
 
   def show
-    @tweet = App.tweets.find { |x| x[:id] == params[:id].to_i }
-    render_template "tweets/show.html.erb"
+    if params[:id].to_i > 0
+      @tweet = App.tweets.find { |x| x[:id] == params[:id].to_i }
+      render_template "tweets/show.html.erb"
+    end
   end
 
   def new

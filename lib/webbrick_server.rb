@@ -1,5 +1,6 @@
 include WEBrick
 class WEBBrickServer < HTTPServlet::AbstractServlet
+
   def do_GET(raw_request, raw_response)    process(raw_request, raw_response); end
   def do_PUT(raw_request, raw_response)    process(raw_request, raw_response); end
   def do_POST(raw_request, raw_response)   process(raw_request, raw_response); end
@@ -28,13 +29,13 @@ class WEBBrickServer < HTTPServlet::AbstractServlet
         .split('&')
         .map { |field| field.split("=") }
         .each do |field_name, field_value|
-          request[:params].store(field_name.to_sym, URI.decode(field_value))
+          request[:params].store(field_name.to_sym, URI.decode(field_value.to_s))
         end
     end
 
     return if request[:route] =~ /favicon/ # Do not process a favicon request
 
-    response = Router.new(request).route
+    response = AppRouter.new(request).route
 
     if response.nil?
       render_not_found(raw_response)
@@ -52,6 +53,7 @@ class WEBBrickServer < HTTPServlet::AbstractServlet
     raw_response.content_length = response[:body].to_s.bytesize
     raw_response.body = response[:body]
   end
+
 
   private
 

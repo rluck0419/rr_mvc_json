@@ -6,6 +6,7 @@ require 'erb'
 require 'json'
 require 'pry'
 require_relative '../config/router'
+require_relative '../config/app_router'
 require_relative '../app/controllers/application_controller'
 require_relative '../lib/all'
 

@@ -4,30 +4,10 @@ class Router
   end
 
   def route
-    # Routes are parsed from top down, so make sure they follow this style
-    # /resource/:id/action
-    # /resouce/:id
-    # /resource
-    # If you don't use that order, it will be like the if statements in fizzbuzz
-    # syntax:
-    # get(<route_string>, <controller_name_constant>, <action_name_symbol)
-    # put('/tweets/:id/edit', TweetsController, :edit)
-    #This route would be for putting an update for the tweet where :id is the number in the URL
-    #
-    # Put your routes in this array using the get, post, put, delete methods below. (remember order matters)
-    [
-      post('/tweets', TweetsController, :create),
-      get('/tweets/new', TweetsController, :new),
-      get('/tweets/:id', TweetsController, :show),
-      get('/tweets', TweetsController, :index),
-      get('/not_here', TweetsController, :not_here), # This is to demo the new redirect_to method
-
-      get('/assets/:type/:name', AssetsController, :handle),
-      root(TweetsController, :index)
-    ].flatten.find(&:itself)
+   raise "You need to override this method by adding an array of get,post,put,delete routes."
   end
 
-  private # No need to edit these, but feel free to read them to see how they work
+  protected # No need to edit these, but feel free to read them to see how they work
 
   def root(controller, action)
     [
@@ -59,31 +39,28 @@ class Router
   end
 
   def get(url_str, resource, action)
-    if get? && route_match?(url_str)
-      fill_params(url_str)
-      send_to_controller(resource, action)
-    end
+    return unless get? && route_match?(url_str)
+    execute(url_str, resource, action)
   end
 
   def post(url_str, resource, action)
-    if post? && route_match?(url_str)
-      fill_params(url_str)
-      send_to_controller(resource, action)
-    end
+    return unless post? && route_match?(url_str)
+    execute(url_str, resource, action)
   end
 
   def put(url_str, resource, action)
-    if put? && route_match?(url_str)
-      fill_params(url_str)
-      send_to_controller(resource, action)
-    end
+    return unless put? && route_match?(url_str)
+    execute(url_str, resource, action)
   end
 
   def delete(url_str, resource, action)
-    if delete? && route_match?(url_str)
-      fill_params(url_str)
-      send_to_controller(resource, action)
-    end
+    return unless delete? && route_match?(url_str)
+    execute(url_str, resource, action)
+  end
+
+  def execute(url_str, resource, action)
+    fill_params(url_str)
+    send_to_controller(resource, action)
   end
 
   def get?
@@ -119,13 +96,29 @@ class Router
     resource.new(@request).send(action)
   end
 
-  def route_match?(url)
-    @request[:route] =~ Regexp.new("^#{con(url)}$")
+  def route_match?(url_path)
+    @request[:route] =~ Regexp.new("^#{replace_dynamic_segments(url_path)}$")
   end
 
-  def con(str)
+  def replace_dynamic_segments(str, depth = 0)
+    return str if depth > 10
     return str unless str.include?(':')
-    updated_str = str.gsub(/(?:(?::.+[\/]([^:]+))|(:.+(.+)$))/) do
+    dynamic_segment_re = /
+      (?:
+         (?:
+          :.+\/([^:]+)
+         )
+         |
+         (?:
+           :.+(.+)$
+         )
+         |
+         (?:
+          :.+
+         )
+      )
+    /xi
+    updated_str = str.gsub(dynamic_segment_re) do
       first_match = Regexp.last_match[1]
       if first_match.nil?
         "(.+)"
@@ -133,6 +126,7 @@ class Router
         "(.+)/#{first_match}"
       end
     end
-    con(updated_str)
+    replace_dynamic_segments(updated_str, depth += 1)
   end
 end
+
