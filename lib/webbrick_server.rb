@@ -37,9 +37,13 @@ class WEBBrickServer < HTTPServlet::AbstractServlet
 
     response = AppRouter.new(request).route
 
-    if response.nil?
+    if response.nil? || response[:status].upcase == "404 NOT FOUND"
       render_not_found(raw_response)
       return
+    end
+
+    if response[:status].upcase =~ /500/
+      render_server_error(request, response, raw_response)
     end
 
     unless response.is_a?(Hash) && response[:body].respond_to?(:bytesize)

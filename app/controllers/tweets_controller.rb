@@ -12,10 +12,8 @@ class TweetsController < ApplicationController
   end
 
   def show
-    if params[:id].to_i > 0
-      @tweet = App.tweets.find { |x| x[:id] == params[:id].to_i }
-      render_template "tweets/show.html.erb"
-    end
+    @tweet = App.tweets.find { |x| x[:id] == params[:id].to_i }
+    render_template "tweets/show.html.erb"
   end
 
   def new
