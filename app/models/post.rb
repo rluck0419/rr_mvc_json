@@ -5,6 +5,7 @@ class Post
   attr_accessor :title, :author, :body, :published
 
   def initialize(author, title, body, published)
+    @@all << self
     @id = set_id
     @title = title
     @author = author
@@ -23,7 +24,7 @@ class Post
   end
 
   def self.all
-    @all
+    @@all
   end
 
   private

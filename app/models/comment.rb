@@ -5,6 +5,7 @@ class Comment
   attr_accessor :message, :author
 
   def initialize(post_id, author, message)
+    @@all << self
     @id = set_id
     @post_id = post_id
     @author = author
