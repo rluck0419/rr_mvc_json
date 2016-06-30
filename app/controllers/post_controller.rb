@@ -8,7 +8,6 @@ class PostController < ApplicationController
   end
 
   def index
-    puts "hey"
     render Post.all.to_json
   end
 
