@@ -14,13 +14,14 @@ class AppRouter < Router
 
   def routes
     [
-      post('/tweets', TweetsController, :create),
-      get('/tweets/new', TweetsController, :new),
-      get('/tweets/:id', TweetsController, :show),
-      get('/tweets', TweetsController, :index),
-      get('/not_here', TweetsController, :not_here), # This is to demo the new redirect_to method
-
-      root(TweetsController, :index)
+      # get('/', PostController, :index)
+      # post('/tweets', TweetsController, :create),
+      # get('/tweets/new', TweetsController, :new),
+      # get('/tweets/:id', TweetsController, :show),
+      # get('/tweets', TweetsController, :index),
+      # get('/not_here', TweetsController, :not_here), # This is to demo the new redirect_to method
+      #
+      root(PostController, :index)
     ]
   end
 end
