@@ -16,6 +16,7 @@ class AppRouter < Router
     [
       get('/posts', PostController, :index),
       get('/posts/:id', PostController, :show),
+      get('/comments/:id', CommentController, :show),
       # post('/tweets', TweetsController, :create),
       # get('/tweets/new', TweetsController, :new),
       # get('/tweets/:id', TweetsController, :show),

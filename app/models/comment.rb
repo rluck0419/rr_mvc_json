@@ -22,7 +22,7 @@ class Comment
   end
 
   def self.all
-    @all
+    @@all
   end
 
   def set_id
