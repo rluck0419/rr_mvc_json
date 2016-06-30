@@ -7,6 +7,10 @@ class CommentController < ApplicationController
     end
   end
 
+  def index
+    render Comment.all.to_json
+  end
+
 
   private
 

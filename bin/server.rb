@@ -32,6 +32,8 @@ Post.all.each do |post|
   Comment.new(post.id, Faker::Name.name, Faker::Lorem.sentence)
 end
 
+Comment.new(1, Faker::Name.name, Faker::Lorem.sentence)
+
 system('clear')
 
 def start_custom_webbrick_server

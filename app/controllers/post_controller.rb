@@ -1,7 +1,28 @@
 class PostController < ApplicationController
   def show
     if post_exists?
-      render Post.all[post_id].to_json
+      #iterate over each comment with the same post_id
+      comments = []
+
+      Comment.all.each do |c|
+        if c.post_id == params[:id].to_i
+          comments << Comment.all[c.id.to_i - 1]
+        end
+      end
+
+      index = params[:id].to_i - 1
+      
+      post = {
+        id: Post.all[index].id,
+        title: Post.all[index].title,
+        author: Post.all[index].author,
+        body: Post.all[index].body,
+        published: Post.all[index].published
+      }
+
+      post[:comments] = comments
+
+      render post.to_json
     else
       render_not_found
     end

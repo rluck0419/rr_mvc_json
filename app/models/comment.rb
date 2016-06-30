@@ -12,7 +12,7 @@ class Comment
     @message = message
   end
 
-  def to_json
+  def to_json(json_arg = nil)
     {
       id: @id,
       message: @message,
