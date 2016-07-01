@@ -27,7 +27,16 @@ class PostController < ApplicationController
 
   def index
     limit_body
-    render Post.all.to_json
+    if params["page"]
+      page = params["page"].to_i
+      bottom = (1 + (10 * (page - 1))) - 1
+      top = (page * 10) - 1
+      posts = Post.all[bottom..top]
+      # also provide a higher object containing previous and next page's posts
+    else
+      posts = Post.all
+    end
+    render posts.to_json
   end
 
   def limited_index
