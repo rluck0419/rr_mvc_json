@@ -26,10 +26,13 @@ class PostController < ApplicationController
   end
 
   def index
-    Post.all.each do |post|
-      post.body = post.body[0..299]
-    end
+    limit_body
     render Post.all.to_json
+  end
+
+  def limited_index
+    limit_body
+    render Post.all[0..9].to_json
   end
 
   def create
@@ -52,5 +55,11 @@ class PostController < ApplicationController
 
   def render_not_found
     render({ msg: "404 - not found" }.to_json, status: "404 NOT FOUND")
+  end
+
+  def limit_body
+    Post.all.each do |post|
+      post.body = post.body[0..299]
+    end
   end
 end
