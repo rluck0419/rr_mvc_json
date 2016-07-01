@@ -25,7 +25,7 @@ module App
 end
 
 100.times do
-  Post.new(Faker::Name.name, Faker::Hipster.word, Faker::Lorem.paragraph, [true,false].sample)
+  Post.new(Faker::Name.name, Faker::Hipster.word, Faker::Lorem.sentence(500), [true,false].sample)
 end
 
 Post.all.each do |post|

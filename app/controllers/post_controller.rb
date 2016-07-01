@@ -26,6 +26,9 @@ class PostController < ApplicationController
   end
 
   def index
+    Post.all.each do |post|
+      post.body = post.body[0..299]
+    end
     render Post.all.to_json
   end
 
