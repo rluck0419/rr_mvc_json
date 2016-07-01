@@ -4,6 +4,7 @@ class PostController < ApplicationController
       #iterate over each comment with the same post_id
       comments = []
 
+### "put" this into post.rb ############################
       Comment.all.each do |c|
         if c.post_id == params[:id].to_i
           comments << Comment.all[c.id.to_i - 1]
@@ -11,16 +12,12 @@ class PostController < ApplicationController
       end
 
       index = params[:id].to_i - 1
-      
-      post = {
-        id: Post.all[index].id,
-        title: Post.all[index].title,
-        author: Post.all[index].author,
-        body: Post.all[index].body,
-        published: Post.all[index].published
-      }
 
+      post = Post.all[index]
+      
+      post = post.to_hash
       post[:comments] = comments
+#######################################################
 
       render post.to_json
     else
@@ -30,6 +27,13 @@ class PostController < ApplicationController
 
   def index
     render Post.all.to_json
+  end
+
+  def create
+    post = Post.new(params["author"], params["title"], params["body"])
+    Post.all << post
+
+    redirect_to "/posts/#{post.id}"
   end
 
 

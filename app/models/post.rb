@@ -4,13 +4,23 @@ class Post
   attr_reader :id
   attr_accessor :title, :author, :body, :published
 
-  def initialize(author, title, body, published)
+  def initialize(author, title, body, published = false)
     @@all << self
     @id = set_id
     @title = title
     @author = author
     @body = body
     @published = published
+  end
+
+  def to_hash
+    {
+      id: @id,
+      title: @title,
+      author: @author,
+      body: @body,
+      published: @published
+    }
   end
 
   def to_json(json_arg = nil)

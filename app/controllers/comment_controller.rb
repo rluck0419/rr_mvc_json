@@ -11,6 +11,14 @@ class CommentController < ApplicationController
     render Comment.all.to_json
   end
 
+  def create
+    comment = Comment.new(params["post_id"], params["author"], params["message"])
+    Comment.all << comment
+
+    post_index = Post.all[params["post_id"].to_i - 1]
+    redirect_to "/posts/#{post_index}"
+  end
+
 
   private
 
