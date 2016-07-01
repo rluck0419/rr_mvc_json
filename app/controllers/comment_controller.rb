@@ -18,9 +18,7 @@ class CommentController < ApplicationController
   end
 
   def show_comments
-    post_comments = []
-
-    post_comments = Comment.all.select { |comment| comment.post_id == params["post_id"] }
+    post_comments = Comment.all.select { |comment| comment.post_id == params[:id].to_i }
 
     render post_comments.to_json
   end
