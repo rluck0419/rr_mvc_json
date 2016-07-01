@@ -17,6 +17,13 @@ class CommentController < ApplicationController
     redirect_to "/posts/#{params["post_id"]}"
   end
 
+  def show_comments
+    post_comments = []
+
+    post_comments = Comment.all.select { |comment| comment.post_id == params["post_id"] }
+
+    render post_comments.to_json
+  end
 
   private
 

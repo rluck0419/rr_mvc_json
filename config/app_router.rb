@@ -14,6 +14,7 @@ class AppRouter < Router
 
   def routes
     [
+      get('/post/:id/comments', CommentController, :show_comments),
       get('/posts/:id', PostController, :show),
       get('/posts', PostController, :index),
 
