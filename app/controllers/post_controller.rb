@@ -32,7 +32,8 @@ class PostController < ApplicationController
       bottom = (1 + (10 * (page - 1))) - 1
       top = (page * 10) - 1
       posts = Post.all[bottom..top]
-      # also provide a higher object containing previous and next page's posts
+      # provide all this inside of a higher-level hash containing next url, previous url, and posts for current page
+      # {next: "/posts?page=3", prev: "/posts?page=1", posts: [{}, {}, {}...]}
     else
       posts = Post.all
     end
