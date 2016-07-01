@@ -12,11 +12,9 @@ class CommentController < ApplicationController
   end
 
   def create
-    comment = Comment.new(params["post_id"], params["author"], params["message"])
-    Comment.all << comment
+    Comment.new(params["post_id"].to_i, params["author"], params["message"])
 
-    post_index = Post.all[params["post_id"].to_i - 1]
-    redirect_to "/posts/#{post_index}"
+    redirect_to "/posts/#{params["post_id"]}"
   end
 
 

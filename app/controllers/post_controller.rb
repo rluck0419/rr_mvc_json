@@ -14,7 +14,7 @@ class PostController < ApplicationController
       index = params[:id].to_i - 1
 
       post = Post.all[index]
-      
+
       post = post.to_hash
       post[:comments] = comments
 #######################################################
@@ -31,7 +31,6 @@ class PostController < ApplicationController
 
   def create
     post = Post.new(params["author"], params["title"], params["body"])
-    Post.all << post
 
     redirect_to "/posts/#{post.id}"
   end
