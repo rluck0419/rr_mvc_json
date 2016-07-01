@@ -27,6 +27,8 @@ class PostController < ApplicationController
 
   def index
     limit_body
+    posts = Post.all
+
     if params["page"]
       page = params["page"].to_i
       bottom = (1 + (10 * (page - 1))) - 1
@@ -34,9 +36,8 @@ class PostController < ApplicationController
       posts = Post.all[bottom..top]
       # provide all this inside of a higher-level hash containing next url, previous url, and posts for current page
       # {next: "/posts?page=3", prev: "/posts?page=1", posts: [{}, {}, {}...]}
-    else
-      posts = Post.all
     end
+
     render posts.to_json
   end
 
