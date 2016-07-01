@@ -17,7 +17,7 @@ class PostController < ApplicationController
 
       post = post.to_hash
       post[:comments] = comments
-#######################################################
+########################################################
 
       render post.to_json
     else
