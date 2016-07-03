@@ -4,7 +4,7 @@ class PostController < ApplicationController
       #iterate over each comment with the same post_id
       comments = []
 
-### "put" this into post.rb ############################
+#### move this into post.rb ############################
       Comment.all.each do |c|
         if c.post_id == params[:id].to_i
           comments << Comment.all[c.id.to_i - 1]
@@ -39,6 +39,30 @@ class PostController < ApplicationController
     end
 
     render posts.to_json
+  end
+
+  def index_published
+    limit_body
+    published = []
+    posts = Post.all
+    posts.each do |post|
+      if post.published
+        published << post
+      end
+    end
+    render published.to_json
+  end
+
+  def index_unpublished
+    limit_body
+    published = []
+    posts = Post.all
+    posts.each do |post|
+      unless post.published
+        published << post
+      end
+    end
+    render published.to_json
   end
 
   def limited_index
