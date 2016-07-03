@@ -76,7 +76,14 @@ class PostController < ApplicationController
     redirect_to "/posts/#{post.id}"
   end
 
+  def update
+    if post_exists?
+      post = Post.all[post_id]
+      post.published = true
+    end
 
+    redirect_to "/posts/#{params[:id]}"
+  end
 
   private
 

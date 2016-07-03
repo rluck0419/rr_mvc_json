@@ -23,6 +23,7 @@ class AppRouter < Router
       get('/comments/:id', CommentController, :show),
       get('/comments', CommentController, :index),
 
+      put('/posts/:id/publish', PostController, :update),
       post('/posts', PostController, :create),
       post('/comments', CommentController, :create),
       # post('/tweets', TweetsController, :create),
