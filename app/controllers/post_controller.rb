@@ -29,16 +29,31 @@ class PostController < ApplicationController
     limit_body
     posts = Post.all
 
+
     if params["page"]
+      meta = {}
       page = params["page"].to_i
-      bottom = (1 + (10 * (page - 1))) - 1
-      top = (page * 10) - 1
-      posts = Post.all[bottom..top]
-      # provide all this inside of a higher-level hash containing next url, previous url, and posts for current page
-      # {next: "/posts?page=3", prev: "/posts?page=1", posts: [{}, {}, {}...]}
+      if page < 1
+        redirect_to "/posts"
+      else
+        next_page = page + 1
+        prev_page = page - 1
+
+        bottom = (1 + (10 * (page - 1))) - 1
+        top = (page * 10) - 1
+        posts = Post.all[bottom..top]
+
+        meta[:posts] = posts
+        meta[:prev] = redirect_to "/posts?page=#{prev_page}"
+        meta[:next] = redirect_to "/posts?page=#{next_page}"
+      end
     end
 
-    render posts.to_json
+    if meta[:posts]
+      render meta.to_json
+    else
+      render posts.to_json
+    end
   end
 
   def index_published
@@ -72,7 +87,7 @@ class PostController < ApplicationController
 
   def create
     if params["title"] == "" || params["body"] == ""
-      render_not_saved
+      render_bad_request
     else
       post = Post.new(params["author"], params["title"], params["body"])
       redirect_to "/posts/#{post.id}"
@@ -102,8 +117,8 @@ class PostController < ApplicationController
     render({ msg: "404 - not found" }.to_json, status: "404 NOT FOUND")
   end
 
-  def render_not_saved
-    render({ msg: "406 - not acceptable. title and body are required." }.to_json, status: "406 NOT ACCEPTABLE")
+  def render_bad_request
+    render({ msg: "400 - bad request - title and body are required" }.to_json, status: "400 BAD REQUEST")
   end
 
   def limit_body
