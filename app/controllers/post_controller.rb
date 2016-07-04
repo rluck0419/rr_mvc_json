@@ -103,7 +103,7 @@ class PostController < ApplicationController
   end
 
   def render_not_saved
-    render({ msg: "whoops - not found" }.to_json, status: "404 NOT FOUND")
+    render({ msg: "406 - not acceptable. title and body are required." }.to_json, status: "406 NOT ACCEPTABLE")
   end
 
   def limit_body
