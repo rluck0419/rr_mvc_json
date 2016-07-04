@@ -33,7 +33,7 @@ class PostController < ApplicationController
     if params["page"]
       meta = {}
       page = params["page"].to_i
-      if page < 1
+      if page < 1 || page > (Post.all.count / 10)
         redirect_to "/posts"
       else
         next_page = page + 1
