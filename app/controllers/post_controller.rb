@@ -71,9 +71,12 @@ class PostController < ApplicationController
   end
 
   def create
-    post = Post.new(params["author"], params["title"], params["body"])
-
-    redirect_to "/posts/#{post.id}"
+    if params["title"] == "" || params["body"] == ""
+      render_not_saved
+    else
+      post = Post.new(params["author"], params["title"], params["body"])
+      redirect_to "/posts/#{post.id}"
+    end
   end
 
   def update
@@ -97,6 +100,10 @@ class PostController < ApplicationController
 
   def render_not_found
     render({ msg: "404 - not found" }.to_json, status: "404 NOT FOUND")
+  end
+
+  def render_not_saved
+    render({ msg: "whoops - not found" }.to_json, status: "404 NOT FOUND")
   end
 
   def limit_body
